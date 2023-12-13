@@ -1,0 +1,82 @@
+.crud-usuario-body {
+  color: white; /* Texto blanco para contrastar con el fondo negro */
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+thead {
+  background-color: #333; /* Color de fondo para la fila de encabezado */
+}
+
+thead th {
+  padding: 12px;
+  text-align: left;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #555; /* Color de fondo para filas pares */
+}
+
+tbody tr:hover {
+  background-color: #777; /* Color de fondo al pasar el mouse sobre la fila */
+}
+
+td {
+  padding: 12px;
+}
+
+form {
+  background-color: #333;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Ajusta la distribución de elementos */
+}
+
+.form-column {
+  flex: 1;
+  margin-bottom: 10px;
+}
+
+.form-column label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between; /* Ajusta la distribución de elementos */
+  width: 100%; /* Ocupa el ancho completo del formulario */
+}
+
+button {
+  flex: 1; /* Ocupa todo el espacio disponible */
+  margin-right: 10px; /* Espacio entre los botones */
+  background-color: #4CAF50; /* Color de fondo para los botones */
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+button:last-child {
+  background-color: #f44336; /* Color de fondo rojo para el botón "Cancelar" */
+}
+
+button:hover {
+  background-color: #45a049; /* Cambiar color al pasar el mouse sobre el botón */
+}
+
+button:last-child:hover {
+  background-color: #d32f2f; /* Cambiar color al pasar el mouse sobre el botón "Cancelar" */
+}

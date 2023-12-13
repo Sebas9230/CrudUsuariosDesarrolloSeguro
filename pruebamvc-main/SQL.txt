@@ -1,0 +1,6 @@
+drop table clienteCompras;
+drop table contactos;
+drop table productos;
+drop table __EFMigrationsHistory;
+
+Select * from clienteCompras;
