@@ -3,9 +3,11 @@ import { addContacto } from "../Services/connectionAPI";
 import { getContactoslist } from "../Services/connectionAPI";
 import { deleteContacto } from "../Services/connectionAPI";
 import "../components/Css/CrudUsuario.css";
+import { Link, useNavigate, useLocation } from "react-router-dom"; // Asegúrate de tener instalado react-router-dom
 //import { render } from "@testing-library/react";
 
 const CrudUsuario = () => {
+  const navigate = useNavigate();
   const [contactos, setContactos] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
@@ -57,7 +59,6 @@ const CrudUsuario = () => {
     }));
   };
 
-
   // Función para manejar el clic en el botón de eliminar ******************************************
   const handleDeleteContacto = async (cedula) => {
     try {
@@ -72,6 +73,31 @@ const CrudUsuario = () => {
     }
   };
 
+  const logOut = async () => {
+    // Realiza una solicitud para revocar el token de acceso
+    try {
+      // URL de cierre de sesión de Google
+      const logoutUrl = "https://accounts.google.com/logout";
+
+      // Abre una nueva ventana
+      const popupWindow = window.open(
+        logoutUrl,
+        "_blank",
+        "width=600,height=400"
+      );
+
+      // Cierra la ventana después de 2 segundos (ajusta según sea necesario)
+      setTimeout(() => {
+        if (popupWindow) {
+          popupWindow.close();
+          navigate('/');
+        }
+      }, 2000);
+    } catch (error) {
+      console.error("Error al cerrar sesión de Google:", error.message);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await getContactoslist();
@@ -81,7 +107,8 @@ const CrudUsuario = () => {
   }, []);
 
   return (
-    <div className="crud-usuario-body"> 
+    <div className="crud-usuario-body">
+      <button onClick={logOut}>Close Google Session</button>
       <h1>Tabla de Usuarios</h1>
 
       {showForm && (
@@ -169,9 +196,7 @@ const CrudUsuario = () => {
         </form>
       )}
 
-      {!showForm && (
-        <button onClick={handleShowForm}>Agregar Usuario</button>
-      )}
+      {!showForm && <button onClick={handleShowForm}>Agregar Usuario</button>}
 
       <div className="table-container">
         <table>
@@ -198,7 +223,9 @@ const CrudUsuario = () => {
                 <td>{contacto.cedula}</td>
                 <td>{contacto.userName}</td>
                 <td>{contacto.password}</td>
-                <button onClick={() => handleDeleteContacto(contacto.cedula)}>Eliminar</button>
+                <button onClick={() => handleDeleteContacto(contacto.cedula)}>
+                  Eliminar
+                </button>
                 {/* Otras celdas si es necesario */}
               </tr>
             ))}
