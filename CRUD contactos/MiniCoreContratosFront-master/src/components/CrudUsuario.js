@@ -1,15 +1,40 @@
+// CrudUsuario.js
 import React, { useEffect, useState } from "react";
 import { addContacto } from "../Services/connectionAPI";
 import { getContactoslist } from "../Services/connectionAPI";
 import { deleteContacto } from "../Services/connectionAPI";
+import ContactosTable from '../components/ContactosTable';
 import "../components/Css/CrudUsuario.css";
 import { Link, useNavigate, useLocation } from "react-router-dom"; // Asegúrate de tener instalado react-router-dom
+import ReactDOM from 'react-dom';
+
 //import { render } from "@testing-library/react";
 
 const CrudUsuario = () => {
   const navigate = useNavigate();
   const [contactos, setContactos] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [showForm2, setShowForm2] = useState(false);
+  const [contactoUsuario, setContactoUsuario] = useState([]);
+
+  // Agrega esta función dentro del componente CrudUsuario
+  const abrirVentanaContactos = () => {
+    // Obtén las dimensiones de la pantalla
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+
+    // Calcula las coordenadas para centrar la ventana
+    const left = (screenWidth - 300) / 2;  // 300 es el ancho de la ventana
+    const top = (screenHeight - 600) / 2;  // 600 es la altura de la ventana
+
+    // Abre la nueva ventana en la posición calculada
+    const ventana = window.open("", "_blank", `width=300,height=600,left=${left},top=${top}`);
+
+    // Renderiza el componente ContactosTable en la nueva ventana
+    ReactDOM.render(<ContactosTable contactos={contactos} />, ventana.document.body);
+};
+
+
 
   // POST *****************************************************************************
   const [newContacto, setNewContacto] = useState({
@@ -22,9 +47,14 @@ const CrudUsuario = () => {
     password: "",
   });
 
-  // Function to handle clicking on the "Agregar Contacto" button
+  // Function to handle clicking on the "Agregar Usuario" button
   const handleShowForm = () => {
     setShowForm(true);
+  };
+
+  // Updated handleShowForm2 function to toggle showForm2
+  const handleShowForm2 = () => {
+    setShowForm2((prevShowForm2) => !prevShowForm2);
   };
 
   const handleAddContacto = async (event) => {
@@ -102,6 +132,15 @@ const CrudUsuario = () => {
     const fetchData = async () => {
       const data = await getContactoslist();
       setContactos(data.listaContactos);
+    };
+    fetchData();
+  }, []);
+
+  // Luego, en useEffect, obtienes los contactos de la API y actualizas el estado
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getContactoslist();
+      setContactoUsuario(data.listaContactos);
     };
     fetchData();
   }, []);
@@ -196,6 +235,7 @@ const CrudUsuario = () => {
         </form>
       )}
 
+
       {!showForm && <button onClick={handleShowForm}>Agregar Usuario</button>}
 
       <div className="table-container">
@@ -223,14 +263,50 @@ const CrudUsuario = () => {
                 <td>{contacto.cedula}</td>
                 <td>{contacto.userName}</td>
                 <td>{contacto.password}</td>
+
+
+                {!showForm2 && <button onClick={handleShowForm2}>Agregar Contacto</button>}
+
+                <button onClick={abrirVentanaContactos}>Mostrar Contactos</button>
+
                 <button onClick={() => handleDeleteContacto(contacto.cedula)}>
-                  Eliminar
+                  Eliminar Usuario
                 </button>
                 {/* Otras celdas si es necesario */}
               </tr>
             ))}
           </tbody>
         </table>
+        {showForm2 && (
+          <form className="contact-form" onSubmit={handleAddContacto}>
+            <div className="form-columns">
+              <div className="form-column">
+                <label>Nombre de Contacto:</label>
+                <input
+                  type="text"
+                  name="imagen"
+                  value={newContacto.imagen}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-column">
+                <label>Telefono de Contacto:</label>
+                <input
+                  type="text"
+                  name="nombre"
+                  value={newContacto.nombre}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-buttons">
+              <button type="submit">Agregar Contacto</button>
+              <button onClick={() => setShowForm2(false)}>Cancelar</button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );
