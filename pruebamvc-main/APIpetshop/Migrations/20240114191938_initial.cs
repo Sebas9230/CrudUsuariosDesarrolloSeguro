@@ -7,7 +7,7 @@
 namespace APIpetshop.Migrations
 {
     /// <inheritdoc />
-    public partial class Azure : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,6 +45,22 @@ namespace APIpetshop.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_contactos", x => x.idContacto);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "contactosUsuario",
+                columns: table => new
+                {
+                    idContacto = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    codUnico = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    cedulaUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_contactosUsuario", x => x.idContacto);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,6 +114,9 @@ namespace APIpetshop.Migrations
 
             migrationBuilder.DropTable(
                 name: "contactos");
+
+            migrationBuilder.DropTable(
+                name: "contactosUsuario");
 
             migrationBuilder.DropTable(
                 name: "productos");

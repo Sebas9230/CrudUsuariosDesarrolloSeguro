@@ -16,6 +16,8 @@ namespace APIpetshop.Models
 
         public DbSet<Contacto> contactos { get; set; }
 
+        public DbSet<ContactoUsuario> contactosUsuario { get; set; }
+
         public DbSet<ClienteCompra> clienteCompras { get; set; }
 
 

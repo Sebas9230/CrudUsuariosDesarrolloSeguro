@@ -14,6 +14,10 @@ namespace APIpetshop.Models
 
             public Contacto contacto{ get; set; }
 
+            public List<ContactoUsuario> listaContactosUsuario{ get; set; }
+
+            public ContactoUsuario contactoUsuario{ get; set; }
+
             public List<ClienteCompra> listaClienteCompras { get; set; }
 
             public ClienteCompra clienteCompra { get; set; }

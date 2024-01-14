@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIpetshop.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20230709042933_Azure")]
-    partial class Azure
+    [Migration("20240114191938_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -134,6 +134,35 @@ namespace APIpetshop.Migrations
                     b.HasKey("idContacto");
 
                     b.ToTable("contactos");
+                });
+
+            modelBuilder.Entity("APIpetshop.Models.ContactoUsuario", b =>
+                {
+                    b.Property<int>("idContacto")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idContacto"));
+
+                    b.Property<string>("cedulaUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("codUnico")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("telefono")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("idContacto");
+
+                    b.ToTable("contactosUsuario");
                 });
 
             modelBuilder.Entity("APIpetshop.Models.Producto", b =>

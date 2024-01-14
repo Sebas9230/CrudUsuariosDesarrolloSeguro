@@ -133,6 +133,35 @@ namespace APIpetshop.Migrations
                     b.ToTable("contactos");
                 });
 
+            modelBuilder.Entity("APIpetshop.Models.ContactoUsuario", b =>
+                {
+                    b.Property<int>("idContacto")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idContacto"));
+
+                    b.Property<string>("cedulaUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("codUnico")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("telefono")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("idContacto");
+
+                    b.ToTable("contactosUsuario");
+                });
+
             modelBuilder.Entity("APIpetshop.Models.Producto", b =>
                 {
                     b.Property<int>("idProducto")
