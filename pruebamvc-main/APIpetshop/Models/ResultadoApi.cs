@@ -22,6 +22,7 @@ namespace APIpetshop.Models
 
             public ClienteCompra clienteCompra { get; set; }
 
+        public string texto { get; set; }
     }
 }
 

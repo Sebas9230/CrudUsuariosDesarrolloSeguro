@@ -43,6 +43,9 @@ VALUES ('imagen3.png', 'Carolina Mendoza', 'Portoviejo', '1743210987', '22078901
 INSERT INTO contactos (imagen, nombre, direccion, telefono, cedula, userName, password)
 VALUES ('imagen1.png', 'Pedro Sanchez', 'Loja', '0932109876', '1708901234', 'psanchez', '12345');
 
+INSERT INTO contactos (imagen, nombre, direccion, telefono, cedula, userName, password)
+VALUES ('imagen1.png', 'Josueth Cueva', 'Condado, Quito', '0993507153', '2200247860', 'JCueva', '12345');
+
 
 
 

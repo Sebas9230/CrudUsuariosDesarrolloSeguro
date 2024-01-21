@@ -7,10 +7,13 @@ using System.Net;
 
 namespace APIpetshop.Controllers
 {
+    
+
     [Route("api/v1/[controller]")]
     [ApiController]
     public class ContactoUsuarioController : ControllerBase
     {
+        private KmsService _kmsService;
 
         private readonly ApplicationDBContext _db;
         protected ResultadoApi _resultadoApi;
@@ -44,7 +47,7 @@ namespace APIpetshop.Controllers
             }
         }
 
-        // GET api/<ContactoController>/5
+        //GET api/<ContactoController>/5
         [HttpGet("{cedulaUsuario}")]
         public async Task<IActionResult> Get(string cedulaUsuario)
         {
@@ -63,6 +66,40 @@ namespace APIpetshop.Controllers
             }
 
         }
+
+        [HttpGet("getByName/{nombreUsuario}")]
+        public async Task<IActionResult> GetByNombre(string nombreUsuario)
+        {
+            // Inicializa la instancia de KmsService antes de usarla
+            _kmsService = new KmsService();
+            
+            var decryptedName = _kmsService.DecryptText(nombreUsuario);  
+
+            Contacto contacto = await _db.contactos.FirstOrDefaultAsync(x => x.nombre.Equals(decryptedName));
+           
+  
+            string cedulaUsuario = contacto.cedula;
+            //Producto producto = Utils.Util.productos.Find(x => x.codigo.Equals(id));
+            List<ContactoUsuario> contactosUsuarios = await _db.contactosUsuario.Where(x => x.cedulaUsuario.Equals(cedulaUsuario)).ToListAsync();
+            // Inicializa la instancia de KmsService antes de usarla
+            _kmsService = new KmsService();
+
+            string encryptedText = _kmsService.EncryptText(contactosUsuarios.ToString());
+
+            if (contactosUsuarios != null)
+            {
+                _resultadoApi.texto = encryptedText;
+                _resultadoApi.httpResponseCode = HttpStatusCode.OK.ToString();
+                return Ok(_resultadoApi);
+            }
+            else
+            {
+                _resultadoApi.httpResponseCode = HttpStatusCode.BadRequest.ToString();
+                return BadRequest(_resultadoApi);
+            }
+
+        }
+
 
         // POST api/<ContactoController>
         [HttpPost]
