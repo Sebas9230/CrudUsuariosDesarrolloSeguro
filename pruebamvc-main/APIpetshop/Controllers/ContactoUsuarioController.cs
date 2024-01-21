@@ -1,7 +1,10 @@
 ﻿using APIpetshop.Models;
+using Google.Cloud.Kms.V1;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Net;
+using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,14 +16,15 @@ namespace APIpetshop.Controllers
     [ApiController]
     public class ContactoUsuarioController : ControllerBase
     {
-        private KmsService _kmsService;
+        private readonly KmsService _kmsService;
 
         private readonly ApplicationDBContext _db;
         protected ResultadoApi _resultadoApi;
 
-        public ContactoUsuarioController(ApplicationDBContext db)
+        public ContactoUsuarioController(KmsService kmsService, ApplicationDBContext db)
         {
             _db = db;
+            _kmsService = kmsService;
             _resultadoApi = new();
         }
 
@@ -67,26 +71,29 @@ namespace APIpetshop.Controllers
 
         }
 
+
         [HttpGet("getByName/{nombreUsuario}")]
         public async Task<IActionResult> GetByNombre(string nombreUsuario)
         {
+            System.Diagnostics.Debug.WriteLine("Entraaaaa a encriptar");
+            Console.WriteLine("Entraaaaa");
             // Inicializa la instancia de KmsService antes de usarla
-            _kmsService = new KmsService();
-            
+                    
             var decryptedName = _kmsService.DecryptText(nombreUsuario);  
 
             Contacto contacto = await _db.contactos.FirstOrDefaultAsync(x => x.nombre.Equals(decryptedName));
-           
-  
+            Console.WriteLine("contacto: "+ contacto.ToString());
+
             string cedulaUsuario = contacto.cedula;
             //Producto producto = Utils.Util.productos.Find(x => x.codigo.Equals(id));
             List<ContactoUsuario> contactosUsuarios = await _db.contactosUsuario.Where(x => x.cedulaUsuario.Equals(cedulaUsuario)).ToListAsync();
             // Inicializa la instancia de KmsService antes de usarla
-            _kmsService = new KmsService();
+            Console.WriteLine("contacto 1 nom: " + contactosUsuarios[0].nombre);
 
-            string encryptedText = _kmsService.EncryptText(contactosUsuarios.ToString());
 
-            if (contactosUsuarios != null)
+            string encryptedText = _kmsService.EncryptText(_kmsService.ConvertListToJson(contactosUsuarios));
+
+            if (encryptedText != null)
             {
                 _resultadoApi.texto = encryptedText;
                 _resultadoApi.httpResponseCode = HttpStatusCode.OK.ToString();
